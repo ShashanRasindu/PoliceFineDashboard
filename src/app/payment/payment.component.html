@@ -1,0 +1,97 @@
+<app-dashboard></app-dashboard>
+<div class="content-wrapper">
+  <section class="content">
+    <div class="container-fluid">
+
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0 text-dark">Payment</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Payment</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+<br><br>
+
+      <div class="container">
+        <form #frmDriver="ngForm" (ngSubmit)="searcdriverh()">
+          <div class="form-group active-pink-3 active-pink-4 mb-4">
+            <input class="form-control"  #txtsearch name="Dno"  type="text"  placeholder="Driving License (B1234567)" aria-label="Search" style="height: 50px;  font-size: 20px" [(ngModel)]="Dlno" pattern="^B\d{7}$" required="true">
+            <br>
+            <div class="row">
+              <div class="col-xs-2 col-sm-4">
+
+              </div>
+              <div class="col-xs-8 col-sm-4">
+                <button id="btnsearch" type="submit" class="btn btn-primary btn-lg text-center" style="width: 350px;">Search</button>
+
+              </div>
+              <div class="col-xs-2 col-sm-4">
+
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="container" *ngIf="DD">
+        <h4 style="color: red"> This Driver Number Not Found</h4>
+
+      </div>
+      <div class="container" *ngIf="BB">
+        <h4 style="color: red"> This Driver Number Not E-Fine Bill</h4>
+
+      </div>
+
+      <div *ngIf="loadingStatus" class="container">
+        <div style="text-align: center !important;" colspan="4">
+          <div class="lds-facebook"><div></div><div></div><div></div></div>
+        </div>
+      </div>
+      <div  class="container" *ngIf="tableBill">
+        <table class="table table-bordered table-green table-hover">
+          <thead>
+          <th >Bill No</th>
+          <th>Vehicle No</th>
+          <th>Fine + Tax</th>
+          <th class="date">Create Date</th>
+          <th class="date">End Date</th>
+          <th>Payment</th>
+          </thead>
+          <tbody>
+          <tr (click)="onClickRow(Abill)" *ngFor="let Abill of fineBilllist" [class.selected]="selectedBill===Abill">
+            <td >{{Abill.fine_id}}</td>
+            <td>{{Abill.vehical_no}}</td>
+            <td>{{Abill.price}}</td>
+            <td class="date">{{Abill.c_date}}</td>
+            <td class="date">{{Abill.e_date}}</td>
+            <td>
+              <button *ngIf="Abill.e_date > today"  class="btn btn-success" (click)="payBill(Abill)"> PayBill</button>
+              <button *ngIf="Abill.e_date <= today" class="btn btn-danger">Expire E-fine</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="container" *ngIf="arrest">
+          <h3 style="color: red"> This Driver Number Do not Settle the Payment. You are Arrest</h3>
+
+        </div>
+        <div class="container" *ngIf="! arrest">
+          <h3 style="color: blue">E-fine Bill after 14 Days</h3>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </section>
+</div>
